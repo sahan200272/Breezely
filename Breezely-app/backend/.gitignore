@@ -1,0 +1,8 @@
+# Ignore environment variables
+.env
+
+# Optional: logs
+*.log
+
+# Optional: build/output folder
+dist/
