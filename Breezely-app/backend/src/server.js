@@ -1,6 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const db = require("./config/db");
+const userRoutes = require("./routes/userRoutes");
 
 dotenv.config();
 const app = express();
@@ -8,6 +9,8 @@ const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON
 app.use(express.json());
+
+app.use("/api/users", userRoutes);
 
 // Simple health route
 app.get("/health", (req, res) => {
