@@ -26,7 +26,8 @@ const registerUser = async (req, res) => {
             user: {
                 id: newUser._id,
                 name: newUser.name,
-                email: newUser.email
+                email: newUser.email,
+                familiarHand: newUser.familiarHand
             }
         });
 

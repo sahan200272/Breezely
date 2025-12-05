@@ -1,7 +1,7 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const connectDB = require("./config/db");
-const userRoutes = require("./routes/userRoutes");
+const mainRoutes = require("./routes/mainRoutes");
 
 dotenv.config();
 const app = express();
@@ -10,7 +10,7 @@ const PORT = process.env.PORT || 3000;
 // Middleware to parse JSON
 app.use(express.json());
 
-app.use("/api/users", userRoutes);
+app.use("/api", mainRoutes);
 
 if (process.env.NODE_ENV !== "test") {
   connectDB().then(() => {
