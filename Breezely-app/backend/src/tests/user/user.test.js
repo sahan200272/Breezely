@@ -2,6 +2,7 @@ const server = require('../../server');
 const mongoose = require('mongoose');
 const User = require('../../models/user.model');
 const request = require('supertest');
+const bcrypt = require("bcrypt");
 
 // create response as global variable so it can use within multiple test suits
 let response;
@@ -16,7 +17,7 @@ afterAll(async () => {
     await mongoose.connection.close();
 });
 
-describe("User API Tests", () => {
+describe("User Register API Tests", () => {
 
     it("should register a new user", async () => {
 
@@ -43,6 +44,14 @@ describe("User API Tests", () => {
         expect(response.body.user).toHaveProperty('email', newUser.email);
         expect(response.body.user).toHaveProperty('familiarHand', newUser.familiarHand);
     });
+
+    it("password should store as hashed", async() => {
+
+        expect(response.body.user.password).not.toBe("test123");
+
+        const isMatch = await bcrypt.compare("test123", response.body.user.password);
+        expect(isMatch).toBe(true);
+    })
 });
 
 describe("User Update API", () => {
@@ -56,7 +65,9 @@ describe("User Update API", () => {
             password: "old123"
         }
 
-        const createdUser = await request(server).post('/api/users/register').send(oldUser);
+        const createdUser = await request(server)
+            .post('/api/users/register')
+            .send(oldUser);
 
         const updatedData = {
             name: "Updated Name",
@@ -76,3 +87,30 @@ describe("User Update API", () => {
     });
 
 });
+
+describe("Get All Users API Tests", () => {
+
+    it("Should get all users available in DB", async () => {
+
+        const res = await request(server).get('/api/users/get');
+
+        console.log(res.body.users);
+
+        expect(res.status).toBe(200);
+        expect(res.body).toHaveProperty("message", "Get All users Success");
+        expect(Array.isArray(res.body.users)).toBe(true);
+    })
+});
+
+describe("Get a Singel User API Tests", () => {
+
+    it("Should get a user available in DB", async () => {
+        
+        const res = await request(server).get(`/api/users/${response.body.user.id}`);
+
+        console.log(res.body.user);
+
+        expect(res.status).toBe(200);
+        expect(res.body).toHaveProperty("message", "user access successfully");
+    })
+})
