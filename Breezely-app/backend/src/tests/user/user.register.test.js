@@ -1,11 +1,9 @@
-const server = require('../server');
+const server = require('../../server');
 const mongoose = require('mongoose');
-const User = require('../models/user.model');
+const User = require('../../models/user.model');
 const request = require('supertest');
 
-describe("User API Tests", () => {
-
-    beforeAll(async () => {
+beforeAll(async () => {
         const mongoURI = process.env.MONGO_URI_TEST;
         await mongoose.connect(mongoURI);
     });
@@ -13,6 +11,8 @@ describe("User API Tests", () => {
     afterAll(async () => {
         await mongoose.connection.close();
     });
+
+describe("User API Tests", () => {
 
     beforeEach(async () => {
         await User.deleteMany({});
