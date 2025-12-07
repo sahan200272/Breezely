@@ -54,6 +54,7 @@ describe("User Register API Tests", () => {
     })
 });
 
+// Update Test
 describe("User Update API", () => {
 
     it("should update user details successfully", async () => {

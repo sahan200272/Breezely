@@ -50,17 +50,23 @@ const updateUser = async (req, res) => {
 
         //extract data from request body
         const { name, email, familiarHand, password } = req.body;
+        let hashedPassword;
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        if (password) {
+            hashedPassword = await bcrypt.hash(password, 10);
+        }
 
         //set extracted data to object
         const data = {
             name: name,
             emial: email,
             familiarHand: familiarHand,
-            password: hashedPassword
+            password: password
         }
 
+        if (hashedPassword) {
+            data.password = hashedPassword
+        }
         //find existing user and update it with new data
         const updatedUser = await User.findByIdAndUpdate(
             id,
