@@ -1,5 +1,5 @@
 require("dotenv").config();
-const db = require("../config/db");
+const db = require("../../config/db");
 const mongoose = require("mongoose");
 
 describe("Database Connection", () => {
