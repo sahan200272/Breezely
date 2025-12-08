@@ -19,13 +19,12 @@ const taskSchema = new mongoose.Schema({
     remindTime: {
         type: String
     },
-    pdfs: [
-        {
-            filename: String,
-            path: String,
-            size: Number,
-        }
-    ]
+    pdfUrl: {
+        type: String
+    },
+    pdfPublicId: {
+        type: String
+    },
 }, { timestamps: true });
 
 module.exports = mongoose.model("Task", taskSchema);
