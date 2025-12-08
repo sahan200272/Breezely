@@ -15,7 +15,7 @@ afterAll(async () => {
 
 describe("Check Tasks APIs", () => {
 
-    it("should insert new task successfully", async () => {
+    it("should insert new task successfully with single PDF", async () => {
 
         console.log(__dirname);
 
@@ -27,10 +27,28 @@ describe("Check Tasks APIs", () => {
             .field("date", "2025-12-07")
             .field("remindDate", "2025-12-10")
             .field("remindTime", "14:23")
-            .attach("pdf", path.join(__dirname, "pdf1.pdf"))
+            .attach("pdfs", path.join(__dirname, "testFile01.pdf"))
 
         expect(res.status).toBe(200);
         expect(res.body.message).toBe("Task created successfully");
         expect(res.body).toHaveProperty("task");
     });
+
+    it("should insert new task successfully with more than one PDFs", async () => {
+
+        //send data as form data (not as json) that's why use field() and attach()<-- this for file upload
+        const res = await request(server).post('/api/tasks/create')
+            .field("title", "test task")
+            .field("note", "test note")
+            .field("category", "test category")
+            .field("date", "2025-12-07")
+            .field("remindDate", "2025-12-10")
+            .field("remindTime", "14:23")
+            .attach("pdfs", path.join(__dirname, "testFile02.pdf"))
+            .attach("pdfs", path.join(__dirname, "testFile03.pdf"))
+
+        expect(res.status).toBe(200);
+        expect(res.body.message).toBe("Task created successfully");
+        expect(res.body).toHaveProperty("task");
+    }, 15000);
 });
