@@ -27,9 +27,10 @@ describe("Check Tasks APIs", () => {
             .field("date", "2025-12-07")
             .field("remindDate", "2025-12-10")
             .field("remindTime", "14:23")
-            .attach("pdfs", path.join(__dirname, "pdf1.pdf"))
+            .attach("pdf", path.join(__dirname, "pdf1.pdf"))
 
         expect(res.status).toBe(200);
-        expect(res.body.message).toBe("Task created");
+        expect(res.body.message).toBe("Task created successfully");
+        expect(res.body).toHaveProperty("task");
     });
 });
