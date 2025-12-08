@@ -12,24 +12,25 @@ exports.createTask = async (req, res) => {
         console.log("Uploaded file path:", req.file.path);
         console.log("File size:", req.file.size); */
 
-        let pdfUrl = null;
-        let pdfPublicId = null;
+        let pdfs = [];
 
         // If a PDF is uploaded
-        if (req.file) {
+        if (req.files && req.files.length > 0) {
 
-            // Convert buffer to Base64 string
-            const base64Pdf = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+            for (const file of req.files) {
 
-            // Upload to Cloudinary
-            const uploadedPdf = await cloudinary.uploader.upload(base64Pdf, {
-                resource_type: "auto",
-                folder: "tasks/pdfs"  //organize files in folder
-            });
+                const base64Pdf = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
 
-            pdfUrl = uploadedPdf.secure_url;
-            pdfPublicId = uploadedPdf.public_id;
+                const uploadedPdf = await cloudinary.uploader.upload(base64Pdf, {
+                    resource_type: "auto",
+                    folder: "tasks/pdfs",
+                });
 
+                pdfs.push({
+                    url: uploadedPdf.secure_url,
+                    publicId: uploadedPdf.public_id
+                });
+            }
         } else {
             console.log("No file uploaded.");
         }
@@ -41,8 +42,7 @@ exports.createTask = async (req, res) => {
             date: req.body.date,
             remindDate: req.body.remindDate,
             remindTime: req.body.remindTime,
-            pdfUrl,
-            pdfPublicId
+            pdfs
         });
 
         //save new tak on DB
@@ -54,7 +54,11 @@ exports.createTask = async (req, res) => {
         });
 
     } catch (error) {
-        console.error("Error creating task:", error);
-        res.status(500).json({ message: "Server error", error: error.message });
+        res.status(500).json(
+            {
+                message: "Server error", 
+                error: error.message
+
+            });
     }
 };
