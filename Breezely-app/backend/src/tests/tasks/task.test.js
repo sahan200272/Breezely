@@ -77,5 +77,14 @@ describe("Check Tasks APIs", () => {
         expect(res.status).toBe(200);
         expect(res.body.message).toBe("tasks access success");
         expect(Array.isArray(res.body.tasks)).toBe(true);
+    });
+
+    it("should retrive single task", async() => {
+
+        const res = await request(server).get(`/api/tasks/${resReg.body.task._id}`);
+
+        expect(res.status).toBe(200);
+        expect(res.body.message).toBe("get a task success");
+        expect(res.body.task).toHaveProperty("_id");
     })
 });

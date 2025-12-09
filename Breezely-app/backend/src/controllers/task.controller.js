@@ -126,22 +126,48 @@ const updateTask = async (req, res) => {
 
 const getAllTasks = async (req, res) => {
 
-    try{
+    try {
         const tasks = await Task.find();
 
-        if(tasks){
+        if (tasks) {
 
             res.status(200).json({
                 message: "tasks access success",
                 tasks: tasks
             })
-        }else{
+        } else {
 
             res.status(404).json({
                 message: "tasks are not available"
             })
         }
-    }catch(error){
+    } catch (error) {
+        res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        })
+    }
+};
+
+const getSingleTask = async (req, res) => {
+
+    try {
+        const { id } = req.params;
+
+        const task = await Task.findById(id);
+
+        if (task) {
+            res.status(200).json({
+                message: "get a task success",
+                task: task
+            })
+        }else{
+            res.status(404).json({
+                message: "Task can not find"
+            })
+        }
+    } catch (error) {
+
         res.status(500).json({
             message: "Server Error",
             error: error.message
@@ -149,4 +175,4 @@ const getAllTasks = async (req, res) => {
     }
 }
 
-module.exports = { createTask, updateTask, getAllTasks };
+module.exports = { createTask, updateTask, getAllTasks, getSingleTask };
