@@ -2,7 +2,7 @@ const Task = require("../models/task.model");
 const cloudinary = require("../config/cloudinary"); // Cloudinary config
 
 // Create a new task
-exports.createTask = async (req, res) => {
+const createTask = async (req, res) => {
 
     try {
 
@@ -56,9 +56,72 @@ exports.createTask = async (req, res) => {
     } catch (error) {
         res.status(500).json(
             {
-                message: "Server error", 
+                message: "Server error",
                 error: error.message
 
             });
     }
 };
+
+// Update exisitng task
+
+const updateTask = async (req, res) => {
+
+    try {
+
+        const { id } = req.params;
+        const { title, note, category, date, remindDate, remindTime } = req.body;
+        const files = req.files;
+
+        // For checking data is coming or not
+        /* console.log(id);
+        console.log(req.body);
+        console.log(files); */
+
+        const pdfs = [];
+
+        if (files && files.length > 0) {
+            for (const file of files) {
+
+                const base64Pdf = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
+
+                const cloudinaryResponse = await cloudinary.uploader.upload(base64Pdf, {
+
+                    resource_type: "auto",
+                    folder: "tasks/pdfs"
+                });
+
+                pdfs.push({
+                    url: cloudinaryResponse.secure_url,
+                    publicId: cloudinaryResponse.public_id
+                })
+            }
+        } else {
+            console.log("No file uploaded.");
+        }
+        
+        const updatedTask = await Task.findByIdAndUpdate(id, {
+
+            title: title,
+            note: note,
+            category: category,
+            date: date,
+            remindDate:remindDate,
+            remindTime:remindTime,
+            pdfs
+        }, { new: true });
+
+        res.status(200).json({
+            message: "Task update success",
+            updateTask: updatedTask
+        })
+
+    } catch (error) {
+        res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
+module.exports = { createTask, updateTask };
