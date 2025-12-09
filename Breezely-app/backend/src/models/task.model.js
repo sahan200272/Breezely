@@ -24,7 +24,11 @@ const taskSchema = new mongoose.Schema({
             url: String,
             publicId: String
         }
-    ]
+    ],
+    status: {
+        type: String,
+        default: "Pending"
+    }
 }, { timestamps: true });
 
 module.exports = mongoose.model("Task", taskSchema);

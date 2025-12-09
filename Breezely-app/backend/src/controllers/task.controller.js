@@ -23,7 +23,7 @@ const createTask = async (req, res) => {
 
                 const uploadedPdf = await cloudinary.uploader.upload(base64Pdf, {
                     resource_type: "auto",
-                    folder: "tasks/pdfs",
+                    folder: "tasks/pdfs"
                 });
 
                 pdfs.push({
@@ -124,6 +124,7 @@ const updateTask = async (req, res) => {
     }
 }
 
+// access all tasks
 const getAllTasks = async (req, res) => {
 
     try {
@@ -149,6 +150,7 @@ const getAllTasks = async (req, res) => {
     }
 };
 
+// access single task
 const getSingleTask = async (req, res) => {
 
     try {
