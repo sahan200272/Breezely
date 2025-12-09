@@ -1,22 +1,8 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { Redirect } from 'expo-router';
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Hello! This is my first Expo App.</Text>
-    </View>
-  );
+// This file is now ONLY used to redirect to the first screen you want to show.
+export default function StartupPage() {
+  // The Redirect component instantly navigates the user to the specified path.
+  // It is the first screen you see until a user is logged in.
+  return <Redirect href="/register" />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
