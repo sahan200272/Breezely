@@ -99,15 +99,15 @@ const updateTask = async (req, res) => {
         } else {
             console.log("No file uploaded.");
         }
-        
+
         const updatedTask = await Task.findByIdAndUpdate(id, {
 
             title: title,
             note: note,
             category: category,
             date: date,
-            remindDate:remindDate,
-            remindTime:remindTime,
+            remindDate: remindDate,
+            remindTime: remindTime,
             pdfs
         }, { new: true });
 
@@ -124,4 +124,29 @@ const updateTask = async (req, res) => {
     }
 }
 
-module.exports = { createTask, updateTask };
+const getAllTasks = async (req, res) => {
+
+    try{
+        const tasks = await Task.find();
+
+        if(tasks){
+
+            res.status(200).json({
+                message: "tasks access success",
+                tasks: tasks
+            })
+        }else{
+
+            res.status(404).json({
+                message: "tasks are not available"
+            })
+        }
+    }catch(error){
+        res.status(500).json({
+            message: "Server Error",
+            error: error.message
+        })
+    }
+}
+
+module.exports = { createTask, updateTask, getAllTasks };

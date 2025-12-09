@@ -68,5 +68,14 @@ describe("Check Tasks APIs", () => {
 
         expect(res.status).toBe(200);
         expect(res.body.message).toBe("Task update success");
+    });
+    
+    it("should retrive all available tasks", async() => {
+
+        const res = await request(server).get('/api/tasks/');
+
+        expect(res.status).toBe(200);
+        expect(res.body.message).toBe("tasks access success");
+        expect(Array.isArray(res.body.tasks)).toBe(true);
     })
 });
