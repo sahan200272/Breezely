@@ -43,7 +43,7 @@ export default function RegisterScreen() {
     };
 
     try {
-      const response = await fetch('http://localhost:5000/api/users/register', {
+      const response = await fetch("http://localhost:5000/api/users/register", {
         method: "POST", // Standard method for creating a new resource
         headers: {
           "Content-Type": "application/json", // Tells the server the body is JSON
@@ -198,12 +198,13 @@ export default function RegisterScreen() {
           {/* --- Footer Section --- */}
           <View style={styles.footerContainer}>
             <Text style={styles.footerText}>If account exist?</Text>
-            <TouchableOpacity
-              style={styles.loginButton}
-              onPress={() => router.replace("/login")}
-            >
-              <Text style={styles.loginButtonText}>Log-in</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.loginButton}
+                // Correct usage of the imported router object
+                onPress={() => router.replace("/login")}
+              >
+                <Text style={styles.loginButtonText}>Log-in</Text>
+              </TouchableOpacity>
           </View>
         </View>
       </KeyboardAvoidingView>
