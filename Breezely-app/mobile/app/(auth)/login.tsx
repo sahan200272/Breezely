@@ -8,11 +8,13 @@ import {
   SafeAreaView,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 // Importing icons from libraries built into Expo
 import { Ionicons, AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { Colors } from "../../constants/colours";
 import { router } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function LoginScreen() {
   // 1. State variables to hold input values and password visibility
@@ -27,7 +29,7 @@ export default function LoginScreen() {
     };
 
     try {
-      const response = await fetch("http://localhost:5000/api/users/login", {
+      const response = await fetch("http://192.168.1.9:5000/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Tells the server the body is JSON
@@ -35,7 +37,19 @@ export default function LoginScreen() {
         body: JSON.stringify(loginData),
       });
 
-      router.replace("/register");
+      if (response.ok) {
+
+        const data = await response.json();
+        console.log(data.user);
+        
+        router.replace({
+          pathname: "../(tabs)",
+          params: {name: data.user.name}
+          
+        });
+      } else {
+        Alert.alert("Error", "User not found");
+      }
     } catch (error) {
       console.error(error);
     }
@@ -113,7 +127,10 @@ export default function LoginScreen() {
           {/* --- Footer Section --- */}
           <View style={styles.footerContainer}>
             <Text style={styles.footerText}>Don’t have an account?</Text>
-            <TouchableOpacity style={styles.registerButton}>
+            <TouchableOpacity
+              style={styles.registerButton}
+              onPress={() => router.replace("/register")}
+            >
               <Text style={styles.registerButtonText}>Register</Text>
             </TouchableOpacity>
           </View>
