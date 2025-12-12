@@ -14,6 +14,7 @@ import {
 import { Ionicons, AntDesign, FontAwesome6 } from "@expo/vector-icons";
 import { Colors } from "../../constants/colours";
 import { router } from "expo-router";
+import { useRouter } from "expo-router";
 
 export default function LoginScreen() {
   // 1. State variables to hold input values and password visibility
@@ -36,9 +37,19 @@ export default function LoginScreen() {
         body: JSON.stringify(loginData),
       });
 
-      console.log(response);
-      router.replace("/register");
-      
+      if (response.ok) {
+
+        const data = await response.json();
+        console.log(data.user);
+        
+        router.replace({
+          pathname: "../(tabs)",
+          params: {name: data.user.name}
+          
+        });
+      } else {
+        Alert.alert("Error", "User not found");
+      }
     } catch (error) {
       console.error(error);
     }
