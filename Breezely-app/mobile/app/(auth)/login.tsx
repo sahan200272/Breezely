@@ -28,7 +28,7 @@ export default function LoginScreen() {
     };
 
     try {
-      const response = await fetch("http://192.168.1.8:5000/api/users/login", {
+      const response = await fetch("http://192.168.1.9:5000/api/users/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Tells the server the body is JSON
@@ -37,6 +37,7 @@ export default function LoginScreen() {
       });
 
       console.log(response);
+      router.replace("/register");
       
     } catch (error) {
       console.error(error);
