@@ -4,5 +4,5 @@ import { Redirect } from 'expo-router';
 export default function StartupPage() {
   // The Redirect component instantly navigates the user to the specified path.
   // It is the first screen you see until a user is logged in.
-  return <Redirect href="/register" />;
+  return <Redirect href="/(auth)/register" />;
 }
