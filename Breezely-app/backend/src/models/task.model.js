@@ -10,16 +10,13 @@ const taskSchema = new mongoose.Schema({
     category: {
         type: String
     },
-    date: {
-        type: Date
-    },
     remindDate: {
-        type: Date
+        type: String
     },
     remindTime: {
         type: String
     },
-    pdfs: [
+    documents: [
         {
             url: String,
             publicId: String

@@ -12,7 +12,16 @@ const createTask = async (req, res) => {
         console.log("Uploaded file path:", req.file.path);
         console.log("File size:", req.file.size); */
 
-        let pdfs = [];
+        const formatDate = (dateInput) => {
+            const dateObj = new Date(dateInput);
+            const year = dateObj.getFullYear();
+            const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+            const day = String(dateObj.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        };
+
+
+        let documents = [];
 
         // If a PDF is uploaded
         if (req.files && req.files.length > 0) {
@@ -21,14 +30,14 @@ const createTask = async (req, res) => {
 
                 const base64Pdf = `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
 
-                const uploadedPdf = await cloudinary.uploader.upload(base64Pdf, {
+                const uploadedDoc = await cloudinary.uploader.upload(base64Pdf, {
                     resource_type: "auto",
-                    folder: "tasks/pdfs"
+                    folder: "tasks/documents"
                 });
 
-                pdfs.push({
-                    url: uploadedPdf.secure_url,
-                    publicId: uploadedPdf.public_id
+                documents.push({
+                    url: uploadedDoc.secure_url,
+                    publicId: uploadedDoc.public_id
                 });
             }
         } else {
@@ -39,10 +48,9 @@ const createTask = async (req, res) => {
             title: req.body.title,
             note: req.body.note,
             category: req.body.category,
-            date: req.body.date,
-            remindDate: req.body.remindDate,
+            remindDate: formatDate(req.body.remindDate),
             remindTime: req.body.remindTime,
-            pdfs
+            documents,
         });
 
         //save new tak on DB
@@ -163,7 +171,7 @@ const getSingleTask = async (req, res) => {
                 message: "get a task success",
                 task: task
             })
-        }else{
+        } else {
             res.status(404).json({
                 message: "Task can not find"
             })
