@@ -15,7 +15,7 @@ Breezely was born out of a personal need. After using **Microsoft To-Do**, I fou
 - **Custom Prioritization:** A unique approach to organizing daily wins vs. long-term goals.
 
 ## 🛠️ Installation
-1. Clone the repo
+1. Clone the repo - https://github.com/sahan200272/Breezely.git
 2. Run `npm install` in both `/client` and `/server`
 3. Set up your `.env` for MongoDB URI
 4. Run `npx react-native run-android` or `run-ios`
